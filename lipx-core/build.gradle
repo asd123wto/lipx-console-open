@@ -1,0 +1,8 @@
+apply from: rootProject.getRootDir().getAbsolutePath() + "/gradle/config/model-config.gradle"
+
+dependencies{
+
+    api libraries.'hutool'
+    api libraries.'fastJson2'
+    api fileTree(dir:'libs',includes:['*jar'])
+}

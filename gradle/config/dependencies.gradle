@@ -1,0 +1,12 @@
+ext.libraries = [
+
+        "hutool"           : [
+                //hutool 工具集
+                dependencies.create("cn.hutool:hutool-all:${hutoolVersion}"),
+        ],
+
+        "fastJson2"        : [
+                dependencies.create("com.alibaba.fastjson2:fastjson2:${fastjson2Version}"),
+        ],
+
+]

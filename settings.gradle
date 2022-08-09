@@ -1,0 +1,6 @@
+
+rootProject.name = 'LIPX-console-open'
+include 'lipx-core'
+include 'console-client'
+include 'console-server'
+
