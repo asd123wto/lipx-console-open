@@ -1,6 +1,9 @@
 package xyz.labmem.lipx.client.console
 
 import xyz.labmem.lipx.client.console.enums.DisplayEnum
+import xyz.labmem.lipx.client.core.AppContext.Companion.cacheList
+import xyz.labmem.lipx.client.core.ConfigData
+import xyz.labmem.lipx.client.core.pojo.PortConfig
 import java.util.*
 
 /**
@@ -25,6 +28,11 @@ class Display {
                 )
                 render(de)
             }
+        }
+
+        fun getList(): ArrayList<PortConfig> {
+            ConfigData.refreshList()
+            return cacheList
         }
 
     }

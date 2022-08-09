@@ -1,5 +1,6 @@
 package xyz.labmem.lipx.client.console.enums
 
+import xyz.labmem.lipx.client.console.Display
 import xyz.labmem.lipx.client.labVersion
 
 /**
@@ -46,9 +47,12 @@ enum class DisplayEnum {
 
             STATUS -> ""
             CONNECT_LIST -> {
-                val title = " 序号     连接名称     服务器IP : 服务器端口[ 代理ip : 代理端口 -> 转发端口 ]     状态 "
-
-                return ""
+                val title = " 序号     连接名称     服务器IP : 服务器端口[ 代理ip : 代理端口 -> 转发端口 ]     状态 \n"
+                var list = ""
+                Display.getList().forEachIndexed { i, t ->
+                    list += "| $i     ${t.remark}     ${t.serverHost} : ${t.serverPort} [${t.proxyHost}${t.proxyPort} -> ${t.targetPort}]     ${t.status.getCN()} \n"
+                }
+                return title + list
             }
 
             LOG -> {
@@ -69,6 +73,7 @@ enum class DisplayEnum {
                 新增连接[new '连接名称'#'服务器IP':'服务器端口'@'密码'@[`'代理ip':'代理端口'->'转发端口'`,..]] 连接详情[info '序号'] 删除连接[del '序号'] 
                 启动连接[start '序号(, all)'] 断开连接[cut '序号(... all)'] 刷新[r] 返回上级[back]
             """.trimIndent()
+
             LOG -> "刷新[r] 返回[back]"
         }
     }

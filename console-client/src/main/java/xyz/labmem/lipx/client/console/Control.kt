@@ -2,6 +2,7 @@ package xyz.labmem.lipx.client.console
 
 import xyz.labmem.lipx.client.console.enums.DisplayEnum
 import xyz.labmem.lipx.client.console.enums.DisplayEnum.*
+import xyz.labmem.lipx.client.shutdown
 import java.util.*
 
 /**
@@ -24,7 +25,7 @@ class Control {
                         } else if (key == "status") {
                             Display.render(STATUS)
                         } else if (key == "exit") {
-
+                            shutdown()
                         }
                     }
 
