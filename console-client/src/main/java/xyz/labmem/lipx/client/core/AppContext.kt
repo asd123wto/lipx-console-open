@@ -11,7 +11,11 @@ class AppContext {
 
     companion object {
 
-        val cacheList = ArrayList<PortConfig>()
+        val cacheData = HashMap<String, PortConfig>()
+
+        var infoCache: PortConfig? = null
+
+        var cacheChange = false
 
     }
 

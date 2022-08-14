@@ -1,10 +1,11 @@
 package xyz.labmem.lipx.client.console
 
 import xyz.labmem.lipx.client.console.enums.DisplayEnum
-import xyz.labmem.lipx.client.core.AppContext.Companion.cacheList
+import xyz.labmem.lipx.client.core.AppContext.Companion.cacheData
 import xyz.labmem.lipx.client.core.ConfigData
 import xyz.labmem.lipx.client.core.pojo.PortConfig
 import java.util.*
+import kotlin.collections.HashMap
 
 /**
  * @description: do something
@@ -30,9 +31,9 @@ class Display {
             }
         }
 
-        fun getList(): ArrayList<PortConfig> {
+        fun getList(): HashMap<String,PortConfig> {
             ConfigData.refreshList()
-            return cacheList
+            return cacheData
         }
 
     }

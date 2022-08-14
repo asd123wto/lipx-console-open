@@ -26,4 +26,6 @@ class PortConfig {
 
     var status = Status.IDLE
 
+    var wls = HashSet<String>()
+
 }

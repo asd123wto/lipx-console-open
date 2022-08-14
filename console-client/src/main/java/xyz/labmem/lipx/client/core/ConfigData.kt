@@ -9,12 +9,11 @@ import cn.hutool.crypto.symmetric.SymmetricCrypto
 import cn.hutool.json.JSONObject
 import cn.hutool.json.JSONUtil
 import cn.hutool.log.StaticLog
-import xyz.labmem.lipx.client.core.AppContext.Companion.cacheList
+import xyz.labmem.lipx.client.core.AppContext.Companion.cacheData
 import xyz.labmem.lipx.client.core.pojo.PortConfig
 import xyz.labmem.lipx.client.core.tool.getJarParentPath
 import xyz.labmem.lipx.client.shutdown
 import java.io.File
-import kotlin.system.exitProcess
 
 
 /**
@@ -116,22 +115,19 @@ class ConfigData {
         }
 
         fun refreshList() {
-            val list = ArrayList<PortConfig>()
+            val map = HashMap<String, PortConfig>()
             read()?.let {
                 it.keys.forEach { k ->
                     it.getJSONObject(k).toBean(PortConfig::class.java).apply {
-                        var getIt: PortConfig? = null
-                        cacheList.forEach { l ->
-                            if (l.id == id)
-                                getIt = l
+                        if (cacheData.containsKey(id)) {
+                            this.status = cacheData[id]!!.status
                         }
-                        getIt?.let { i -> this.status = i.status }
-                        list.add(this)
+                        map[id!!] = this
                     }
                 }
             }
-            cacheList.clear()
-            cacheList.addAll(list)
+            cacheData.clear()
+            cacheData.putAll(map)
         }
 
         fun write(config: PortConfig) {

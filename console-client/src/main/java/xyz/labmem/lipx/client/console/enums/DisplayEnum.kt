@@ -1,6 +1,7 @@
 package xyz.labmem.lipx.client.console.enums
 
 import xyz.labmem.lipx.client.console.Display
+import xyz.labmem.lipx.client.core.AppContext
 import xyz.labmem.lipx.client.labVersion
 
 /**
@@ -34,22 +35,23 @@ enum class DisplayEnum {
 
             CONNECT_INFO -> {
                 return """
-                    [name]连接名称 : 
-                    [sip]服务器IP : 
-                    [spt]服务器端口 : 
-                    [pip]代理IP : 
-                    [ppt]代理端口 : 
-                    [tpt]转发端口 : 
-                    [pwd]密码 : 
-                    [wls]访问白名单 : 
+                    [name]连接名称 : ${AppContext.infoCache?.remark} 
+                    [sip]服务器HOST : ${AppContext.infoCache?.serverHost} 
+                    [spt]服务器端口 : ${AppContext.infoCache?.serverPort} 
+                    [pip]代理HOST : ${AppContext.infoCache?.proxyHost} 
+                    [ppt]代理端口 : ${AppContext.infoCache?.proxyPort}
+                    [tpt]转发端口 : ${AppContext.infoCache?.targetPort}
+                    [pwd]密码 : ${AppContext.infoCache?.password}
+                    [wls]访问白名单 : ${AppContext.infoCache?.wls.toString()}
                 """.trimIndent()
             }
 
             STATUS -> ""
             CONNECT_LIST -> {
-                val title = " 序号     连接名称     服务器IP : 服务器端口[ 代理ip : 代理端口 -> 转发端口 ]     状态 \n"
+                val title =
+                    " id     连接名称     服务器HOST : 服务器端口[ 代理HOST : 代理端口 -> 转发端口 ]     状态 \n"
                 var list = ""
-                Display.getList().forEachIndexed { i, t ->
+                Display.getList().forEach { (i, t) ->
                     list += "| $i     ${t.remark}     ${t.serverHost} : ${t.serverPort} [${t.proxyHost}${t.proxyPort} -> ${t.targetPort}]     ${t.status.getCN()} \n"
                 }
                 return title + list
@@ -70,8 +72,12 @@ enum class DisplayEnum {
             CONNECT_INFO -> "编辑[edit 'key' 'val'] 保存[save] 返回[back]"
             STATUS -> "刷新[r] 返回[back]"
             CONNECT_LIST -> """
-                新增连接[new '连接名称'#'服务器IP':'服务器端口'@'密码'@[`'代理ip':'代理端口'->'转发端口'`,..]] 连接详情[info '序号'] 删除连接[del '序号'] 
-                启动连接[start '序号(, all)'] 断开连接[cut '序号(... all)'] 刷新[r] 返回上级[back]
+                新增连接[new '连接名称'#'服务器HOST':'服务器端口'@'密码'@[`'代理HOST':'代理端口'->'转发端口'`,..]] 
+                        连接详情[info 'id'] 
+                        删除连接[del 'id'] 
+                        启动连接[start 'id(, all)'] 
+                        断开连接[cut 'id(... all)'] 
+                        刷新[r]   返回上级[back]
             """.trimIndent()
 
             LOG -> "刷新[r] 返回[back]"
