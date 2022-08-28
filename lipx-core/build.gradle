@@ -5,4 +5,6 @@ dependencies{
     api libraries.'hutool'
     api libraries.'fastJson2'
     api fileTree(dir:'libs',includes:['*jar'])
+    api libraries.'netty'
+    api 'xyz.labmem.lipx:lipx-common'
 }

@@ -9,8 +9,10 @@ import xyz.labmem.lipx.client.console.enums.DisplayEnum.*
 import xyz.labmem.lipx.client.core.AppContext
 import xyz.labmem.lipx.client.core.AppContext.Companion.cacheChange
 import xyz.labmem.lipx.client.core.AppContext.Companion.cacheData
+import xyz.labmem.lipx.client.core.AppContext.Companion.connectList
 import xyz.labmem.lipx.client.core.AppContext.Companion.infoCache
 import xyz.labmem.lipx.client.core.ConfigData
+import xyz.labmem.lipx.client.core.LabSSHPenetrationClient
 import xyz.labmem.lipx.client.core.pojo.PortConfig
 import xyz.labmem.lipx.client.shutdown
 import java.util.*
@@ -114,10 +116,37 @@ class Control {
                             }
                             Display.render(de)
                         } else if (key == "start") {
-                            //TODO 连接
+                            if (inputList[1] == "all") {
+                                cacheData.forEach {
+                                    connectList[it.key] = LabSSHPenetrationClient(it.value).apply {
+                                        connect()
+                                    }
+                                }
+                            } else {
+                                inputList[1].split(",").forEach {
+                                    if (cacheData.containsKey(it)) {
+                                        connectList[it] = LabSSHPenetrationClient(cacheData[it]!!).apply {
+                                            connect()
+                                        }
+                                    } else
+                                        println("id【$it】错误！")
+
+                                }
+                            }
                             Display.render(de)
                         } else if (key == "cut") {
-                            //TODO 断开
+                            if (inputList[1] == "all") {
+                                connectList.forEach {
+                                    it.value.close()
+                                }
+                            } else {
+                                inputList[1].split(",").forEach {
+                                    if (connectList.containsKey(it)) {
+                                        connectList[it]?.close()
+                                    } else
+                                        println("id【$it】错误！")
+                                }
+                            }
                             Display.render(de)
                         } else if (key == "r") {
                             Display.render(de)

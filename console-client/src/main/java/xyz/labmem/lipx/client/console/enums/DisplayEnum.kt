@@ -82,8 +82,8 @@ enum class DisplayEnum {
                         新增连接[new '服务器HOST':'服务器端口'&'密码'@['连接名称'#'代理HOST'%'代理端口'->'转发端口',..]] 
                         连接详情[info 'id'] 
                         删除连接[del 'id'] 
-                        启动连接[start 'id(, all)'] 
-                        断开连接[cut 'id(... all)'] 
+                        启动连接[start 'id(..., all)'] 
+                        断开连接[cut 'id(..., all)'] 
                         刷新[r]   返回上级[back]
             """.trimIndent()
 

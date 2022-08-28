@@ -1,6 +1,7 @@
 package xyz.labmem.lipx.client.core
 
 import xyz.labmem.lipx.client.core.pojo.PortConfig
+import java.util.LinkedList
 
 /**
  * @description: do something
@@ -16,6 +17,10 @@ class AppContext {
         var infoCache: PortConfig? = null
 
         var cacheChange = false
+
+        val logs = LinkedList<String>()
+
+        val connectList = HashMap<String, LabSSHPenetrationClient>()
 
     }
 

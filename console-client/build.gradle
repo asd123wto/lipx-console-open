@@ -1,6 +1,5 @@
 apply from: rootProject.getRootDir().getAbsolutePath() + "/gradle/config/model-config.gradle"
 
 dependencies {
-
     api project(':lipx-core')
 }
