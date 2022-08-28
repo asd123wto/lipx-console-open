@@ -2,6 +2,9 @@ package xyz.labmem.lipx.client.console.enums
 
 import xyz.labmem.lipx.client.console.Display
 import xyz.labmem.lipx.client.core.AppContext
+import xyz.labmem.lipx.client.core.AppContext.Companion.cacheData
+import xyz.labmem.lipx.client.core.AppContext.Companion.connectList
+import xyz.labmem.lipx.client.core.AppContext.Companion.logs
 import xyz.labmem.lipx.client.labVersion
 
 /**
@@ -46,9 +49,12 @@ enum class DisplayEnum {
                 """.trimIndent()
             }
 
-            STATUS -> ""
+            STATUS -> """
+                总配置数量:${cacheData.size}         当前通信数量：${connectList.size}
+            """.trimIndent()
+
             CONNECT_LIST -> {
-                val title ="""
+                val title = """
                     ____________________________________________________________________________________
                     |id     连接名称     服务器HOST : 服务器端口 [ 代理HOST : 代理端口 -> 转发端口 ]     状态| 
 
@@ -57,7 +63,7 @@ enum class DisplayEnum {
                 Display.getList().forEach { (i, t) ->
                     list += "| $i     ${t.remark}     ${t.serverHost} : ${t.serverPort} [${t.proxyHost} : ${t.proxyPort} -> ${t.targetPort}]     ${t.status.getCN()} |\n"
                 }
-                return title + list+"""
+                return title + list + """
                     ____________________________________________________________________________________
                     
                     
@@ -65,7 +71,9 @@ enum class DisplayEnum {
             }
 
             LOG -> {
-                return ""
+                var list = ""
+                logs.forEach { list += " > $it" }
+                return list
             }
         }
     }
@@ -75,9 +83,9 @@ enum class DisplayEnum {
      */
     fun hint(): String {
         return "tips: " + when (this) {
-            HOME -> "连接列表[list] 状态[status] 退出客户端[exit]"
+            HOME -> "连接列表[list] 状态[status] 日志[log] 退出客户端[exit]"
             CONNECT_INFO -> "编辑[edit 'key' 'val'] 保存[save] 返回[back]"
-            STATUS -> "刷新[r] 返回[back]"
+            STATUS -> "连接全部[start] 断开全部连接[close] 刷新[r] 返回[back]"
             CONNECT_LIST -> """
                         新增连接[new '服务器HOST':'服务器端口'&'密码'@['连接名称'#'代理HOST'%'代理端口'->'转发端口',..]] 
                         连接详情[info 'id'] 
@@ -93,11 +101,11 @@ enum class DisplayEnum {
 
     fun keys(): List<String> {
         return when (this) {
-            HOME -> listOf("list", "status", "exit")
-            CONNECT_LIST -> listOf("new", "info", "del", "start", "cut", "back","r")
+            HOME -> listOf("list", "status", "log", "exit")
+            CONNECT_LIST -> listOf("new", "info", "del", "start", "cut", "back", "r")
             CONNECT_INFO -> listOf("edit", "save", "back")
             LOG -> listOf("r", "back")
-            STATUS -> listOf("r", "back")
+            STATUS -> listOf("start", "close", "r", "back")
         }
 
     }

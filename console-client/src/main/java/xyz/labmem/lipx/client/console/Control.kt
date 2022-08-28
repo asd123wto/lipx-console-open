@@ -36,7 +36,10 @@ class Control {
                         if (key == "list") {
                             Display.render(CONNECT_LIST)
                         } else if (key == "status") {
+                            ConfigData.refreshList()
                             Display.render(STATUS)
+                        } else if (key == "log") {
+                            Display.render(LOG)
                         } else if (key == "exit") {
                             shutdown()
                         }
@@ -275,6 +278,18 @@ class Control {
                             Display.render(de)
                         } else if (key == "back") {
                             Display.render(HOME)
+                        } else if (key == "start") {
+                            cacheData.forEach {
+                                connectList[it.key] = LabSSHPenetrationClient(it.value).apply {
+                                    connect()
+                                }
+                            }
+                            Display.render(de)
+                        } else if (key == "close") {
+                            connectList.forEach {
+                                it.value.close()
+                            }
+                            Display.render(de)
                         }
                     }
                 }

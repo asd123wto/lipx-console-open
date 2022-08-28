@@ -39,7 +39,6 @@ fun main() {
         }
         print("$p \r")
     }
-
     Display.render(DisplayEnum.HOME)
 }
 
