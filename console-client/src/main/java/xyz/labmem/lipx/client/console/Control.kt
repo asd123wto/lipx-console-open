@@ -1,13 +1,20 @@
 package xyz.labmem.lipx.client.console
 
 import cn.hutool.core.convert.Convert
+import cn.hutool.core.util.RandomUtil
+import com.alibaba.fastjson2.JSONArray
+import com.alibaba.fastjson2.JSONObject
 import xyz.labmem.lipx.client.console.enums.DisplayEnum
 import xyz.labmem.lipx.client.console.enums.DisplayEnum.*
+import xyz.labmem.lipx.client.core.AppContext
 import xyz.labmem.lipx.client.core.AppContext.Companion.cacheChange
 import xyz.labmem.lipx.client.core.AppContext.Companion.cacheData
 import xyz.labmem.lipx.client.core.AppContext.Companion.infoCache
+import xyz.labmem.lipx.client.core.ConfigData
+import xyz.labmem.lipx.client.core.pojo.PortConfig
 import xyz.labmem.lipx.client.shutdown
 import java.util.*
+import kotlin.collections.ArrayList
 
 /**
  * @description: do something
@@ -35,13 +42,53 @@ class Control {
 
                     CONNECT_LIST -> {
                         if (key == "new") {
-                            //TODO
+                            try {
+                                val addList = ArrayList<PortConfig>()
+                                var ot = inputList[1].split(":")
+                                val serverHost = ot[0]
+                                ot = ot[1].split("&")
+                                val serverPort = ot[0]
+                                ot = ot[1].split("@")
+                                val password = ot[0]
+                                ot[1].replace("[", "").replace("]", "").split(",").forEach {
+                                    PortConfig().apply {
+                                        this.id = RandomUtil.randomString(6)
+                                        this.serverHost = serverHost
+                                        try {
+                                            this.serverPort = serverPort.toInt()
+                                        } catch (e: Exception) {
+                                            throw Exception("【服务器端口不正确】")
+                                        }
+                                        this.password = password
+                                        var ou = it.split("#")
+                                        this.remark = ou[0]
+                                        ou = ou[1].split("%")
+                                        this.proxyHost = ou[0]
+                                        ou = ou[1].split("->")
+                                        try {
+                                            this.proxyPort = ou[0].toInt()
+                                        } catch (e: Exception) {
+                                            throw Exception("【代理端口不正确】")
+                                        }
+                                        try {
+                                            this.targetPort = ou[1].toInt()
+                                        } catch (e: Exception) {
+                                            throw Exception("【转发端口不正确】")
+                                        }
+                                        addList.add(this)
+                                    }
+                                }
+                                ConfigData.write(addList)
+                                println("保存成功！")
+                            } catch (e: Exception) {
+                                println("保存错误！ " + e.message)
+                            }
                             Display.render(de)
                         } else if (key == "info") {
                             if (cacheData.containsKey(inputList[1])) {
                                 infoCache = cacheData[inputList[1]]
-                                Display.render(CONNECT_INFO)
                                 cacheChange = false
+                                Display.render(CONNECT_INFO)
                             } else {
                                 println(
                                     """
@@ -54,8 +101,8 @@ class Control {
                             if (cacheData.containsKey(inputList[1])) {
                                 val data = cacheData[inputList[1]]
                                 if (enquire("是否删除'${data!!.remark}'?")) {
-                                    cacheData.remove(inputList[1])
-                                    //TODO 保存到文件
+//                                    cacheData.remove(inputList[1])
+                                    ConfigData.delById(inputList[1])
                                     println("删除成功！")
                                 }
                             } else {
@@ -81,9 +128,8 @@ class Control {
 
                     CONNECT_INFO -> {
                         if (key == "edit") {
-                            val key = inputList[1]
                             val value = inputList[2]
-                            when (key) {
+                            when (inputList[1]) {
                                 "name" -> {
                                     infoCache?.remark = value
                                     cacheChange = true
@@ -165,10 +211,12 @@ class Control {
                                     }
                                     Display.render(de)
                                 }
+
                                 else -> return false
                             }
                         } else if (key == "save") {
-                            //TODO 保存到文件
+                            infoCache?.let { ConfigData.write(it) }
+                            println("保存成功！")
                             Display.render(CONNECT_LIST)
                         } else if (key == "back") {
                             if (cacheChange) {

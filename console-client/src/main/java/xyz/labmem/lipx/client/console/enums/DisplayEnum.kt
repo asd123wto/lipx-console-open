@@ -48,13 +48,20 @@ enum class DisplayEnum {
 
             STATUS -> ""
             CONNECT_LIST -> {
-                val title =
-                    " id     连接名称     服务器HOST : 服务器端口[ 代理HOST : 代理端口 -> 转发端口 ]     状态 \n"
+                val title ="""
+                    ____________________________________________________________________________________
+                    |id     连接名称     服务器HOST : 服务器端口 [ 代理HOST : 代理端口 -> 转发端口 ]     状态| 
+
+                """.trimIndent()
                 var list = ""
                 Display.getList().forEach { (i, t) ->
-                    list += "| $i     ${t.remark}     ${t.serverHost} : ${t.serverPort} [${t.proxyHost}${t.proxyPort} -> ${t.targetPort}]     ${t.status.getCN()} \n"
+                    list += "| $i     ${t.remark}     ${t.serverHost} : ${t.serverPort} [${t.proxyHost} : ${t.proxyPort} -> ${t.targetPort}]     ${t.status.getCN()} |\n"
                 }
-                return title + list
+                return title + list+"""
+                    ____________________________________________________________________________________
+                    
+                    
+                """.trimIndent()
             }
 
             LOG -> {
@@ -72,7 +79,7 @@ enum class DisplayEnum {
             CONNECT_INFO -> "编辑[edit 'key' 'val'] 保存[save] 返回[back]"
             STATUS -> "刷新[r] 返回[back]"
             CONNECT_LIST -> """
-                新增连接[new '连接名称'#'服务器HOST':'服务器端口'@'密码'@[`'代理HOST':'代理端口'->'转发端口'`,..]] 
+                        新增连接[new '服务器HOST':'服务器端口'&'密码'@['连接名称'#'代理HOST'%'代理端口'->'转发端口',..]] 
                         连接详情[info 'id'] 
                         删除连接[del 'id'] 
                         启动连接[start 'id(, all)'] 
@@ -87,7 +94,7 @@ enum class DisplayEnum {
     fun keys(): List<String> {
         return when (this) {
             HOME -> listOf("list", "status", "exit")
-            CONNECT_LIST -> listOf("new", "info", "del", "start", "cut", "back")
+            CONNECT_LIST -> listOf("new", "info", "del", "start", "cut", "back","r")
             CONNECT_INFO -> listOf("edit", "save", "back")
             LOG -> listOf("r", "back")
             STATUS -> listOf("r", "back")

@@ -142,8 +142,24 @@ class ConfigData {
             write(data)
         }
 
+        fun write(configs: List<PortConfig>) {
+            var data = read()
+            if (data != null) {
+                configs.forEach {
+                    data!![it.id] = it
+                }
+            } else {
+                data = JSONObject().apply {
+                    configs.forEach {
+                        set(it.id, it)
+                    }
+                }
+            }
+            write(data)
+        }
+
         //写入文件
-        fun write(json: JSONObject) {
+        private fun write(json: JSONObject) {
             getKey().apply {
                 val dataStr = encryptHex(json.toStringPretty())
                 if (hasKey) {
