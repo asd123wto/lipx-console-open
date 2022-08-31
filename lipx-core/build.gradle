@@ -1,10 +1,10 @@
 apply from: rootProject.getRootDir().getAbsolutePath() + "/gradle/config/model-config.gradle"
 
-dependencies{
+dependencies {
 
     api libraries.'hutool'
     api libraries.'fastJson2'
-    api fileTree(dir:'libs',includes:['*jar'])
+    api fileTree(dir: rootProject.getRootDir().getAbsolutePath() + '/libs', includes: ['*jar'])
     api libraries.'netty'
-    api 'xyz.labmem.lipx:lipx-common'
+//    api 'xyz.labmem.lipx:lipx-common'
 }

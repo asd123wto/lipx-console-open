@@ -6,6 +6,6 @@ dependencies {
 
 shadowJar {
     manifest {
-        attributes("Main-Class": "xyz.labmem.lipx.client.ApplicationMainKt")
+        attributes("Main-Class": "xyz.labmem.lipx.server.ApplicationMainKt")
     }
 }
