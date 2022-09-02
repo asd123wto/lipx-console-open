@@ -20,7 +20,7 @@ class AppContext {
 
         var cacheChange = false
 
-        var run = server.getStatus() == ServerStatus.RUN
+        fun run() = server.getStatus() == ServerStatus.RUN
 
         var startDate: String = "-"
 

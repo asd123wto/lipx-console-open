@@ -102,10 +102,10 @@ enum class DisplayEnum {
     fun keys(): List<String> {
         return when (this) {
             HOME -> listOf("list", "status", "log", "exit")
-            CONNECT_LIST -> listOf("new", "info", "del", "start", "cut", "back", "r")
-            CONNECT_INFO -> listOf("edit", "save", "back")
-            LOG -> listOf("r", "back")
-            STATUS -> listOf("start", "close", "r", "back")
+            CONNECT_LIST -> listOf("new", "info", "del", "start", "cut", "back", "r", "./")
+            CONNECT_INFO -> listOf("edit", "save", "back", "./")
+            LOG -> listOf("r", "back", "./")
+            STATUS -> listOf("start", "close", "r", "back", "./")
         }
 
     }

@@ -9,7 +9,7 @@ class ServerConfig {
 
     var port: Int = 11701
 
-    var password: String? = null
+    var password: String = ""
 
     var wls = HashSet<String>()
 

@@ -1,6 +1,7 @@
 package xyz.labmem.lipx.server.core.handler
 
 import cn.hutool.core.date.DateUtil
+import cn.hutool.json.JSONArray
 import cn.hutool.log.StaticLog
 import io.netty.channel.Channel
 import io.netty.channel.ChannelHandlerContext
@@ -78,7 +79,7 @@ class LabServerHandler(
     private fun processRegister(message: LabMessage) {
         val metaData = HashMap<String, Any>()
         val password: String = message.metaData!!["password"].toString()
-        val cwls = message.metaData!!["wls"] as Set<*>
+        val cwls =  message.metaData!!["wls"] as JSONArray
         if (server.wls.isEmpty() || server.wls.contains(ip)) {
             if (server.password != password) {
                 metaData["success"] = false

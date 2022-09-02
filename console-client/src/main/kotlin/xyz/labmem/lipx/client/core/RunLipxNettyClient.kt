@@ -19,7 +19,7 @@ import xyz.labmem.lipx.netty.core.codec.LabMessageEncoder
  * @date: 2022/5/27 13:11
  */
 class LabSSHPenetrationClient(
-    private val config: PortConfig,
+    private var config: PortConfig,
 ) {
     private lateinit var tcp: TcpConnection
 
@@ -84,10 +84,8 @@ class LabSSHPenetrationClient(
                 }.start()
             }
         } catch (e: Exception) {
-            if (!remake) {
-                cacheData[config.id]?.status = Status.FAILED
-                AppContext.connectList.remove(config.id)
-            }
+            cacheData[config.id]?.status = Status.FAILED
+            AppContext.connectList.remove(config.id)
             LogInfo.appendLogError("lipx连接错误:${e.message}", config)
         }
     }
@@ -99,10 +97,25 @@ class LabSSHPenetrationClient(
             tcp.channel?.close()
             LogInfo.appendLog("连接已断开", config)
         } catch (e: Exception) {
-            LogInfo.appendLogError("连接已断开错误:${e.message}", config)
+            LogInfo.appendLogError("连接断开错误:${e.message}", config)
         } finally {
             cacheData[config.id]?.status = Status.IDLE
             AppContext.connectList.remove(config.id)
+        }
+    }
+
+    fun restart(newConfig: PortConfig) {
+        config = newConfig
+        cacheData[config.id]?.status = Status.RE_CONNECT
+        LogInfo.appendLog("正在断开当前连接。。", config)
+        try {
+            remake = false
+            tcp.channel?.close()
+            LogInfo.appendLog("连接已断开，准备重启", config)
+            connect()
+        } catch (e: Exception) {
+            cacheData[config.id]?.status = Status.IDLE
+            LogInfo.appendLogError("连接重启错误:${e.message}", config)
         }
     }
 

@@ -3,9 +3,7 @@ package xyz.labmem.lipx.server
 
 import xyz.labmem.lipx.server.console.Display
 import xyz.labmem.lipx.server.console.enums.DisplayEnum
-import xyz.labmem.lipx.server.core.AppContext
 import xyz.labmem.lipx.server.core.ConfigData
-import xyz.labmem.lipx.server.core.LabNettyPenetrationServer
 import kotlin.system.exitProcess
 
 
@@ -17,7 +15,6 @@ import kotlin.system.exitProcess
 const val labVersion = "1.0"
 fun main() {
     var process = 0
-
     Thread {
         process = 1
         ConfigData.init()
@@ -41,6 +38,7 @@ fun main() {
         }
         print("$p \r")
     }
+
     Display.render(DisplayEnum.HOME)
 }
 

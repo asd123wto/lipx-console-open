@@ -36,17 +36,19 @@ enum class DisplayEnum {
 
             STATUS -> {
                 val title = """
-                当前服务状态：${if (AppContext.run) "前进四中" else "节省能源中"}
+                当前服务状态：${if (AppContext.run()) "前进四!" else "节省能源中"}
                 已代理列表(size:${clientList.size})：
-                _____________________________________________________
-                |连接时间       连接IP        连接名称        使用端口    |
+                _____________________________________________________________________________
+                |连接时间                  连接IP             连接名称                使用端口    |
+                
                 """.trimIndent()
                 var content = ""
                 clientList.forEach {
                     content += "|${it.value.connectTime}       ${it.value.ip}        ${it.value.name}      ${it.value.port}   |\n"
                 }
                 return title + content + """
-                _____________________________________________________
+                    
+                _____________________________________________________________________________
                 """.trimIndent()
             }
 
@@ -71,7 +73,7 @@ enum class DisplayEnum {
         return "tips: " + when (this) {
             HOME -> "配置[config] 状态[status] 日志[log] 退出服务端[exit]"
             CONFIG -> "编辑[edit 'key' 'val'] 保存[save] 返回[back]"
-            STATUS -> "连接全部[start] 断开全部连接[close] 刷新[r] 返回[back]"
+            STATUS -> "启动服务[start] 关闭服务[close] 刷新[r] 返回[back]"
             LOG -> "刷新[r] 返回[back]"
         }
     }
